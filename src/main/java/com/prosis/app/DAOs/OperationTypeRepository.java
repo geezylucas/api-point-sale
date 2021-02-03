@@ -1,0 +1,9 @@
+package com.prosis.app.DAOs;
+
+import com.prosis.app.entities.OperationTypeEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface OperationTypeRepository extends JpaRepository<OperationTypeEntity, Short> {
+}
