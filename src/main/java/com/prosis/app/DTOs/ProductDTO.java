@@ -34,11 +34,7 @@ public class ProductDTO {
     private boolean status;
     @JsonProperty
     private boolean isBulk;
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
     private String createdAt;
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
     private String updatedAt;
     private Integer userId;
     private Integer categoryId;

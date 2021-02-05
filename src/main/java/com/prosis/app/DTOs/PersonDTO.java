@@ -25,8 +25,6 @@ public class PersonDTO {
     private String email;
     private short kind;
     private boolean status;
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
     private String createdAt;
 
     public Date getCreatedAtConverted(String timezone) throws ParseException {

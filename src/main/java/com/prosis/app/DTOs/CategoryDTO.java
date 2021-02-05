@@ -19,8 +19,6 @@ public class CategoryDTO {
     private String image;
     private String name;
     private String description;
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
     private String createdAt;
 
     public Date getCreatedAtConverted(String timezone) throws ParseException {
