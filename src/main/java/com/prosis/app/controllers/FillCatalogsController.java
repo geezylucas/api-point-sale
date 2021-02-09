@@ -63,4 +63,16 @@ public class FillCatalogsController {
     public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO newProduct) {
         return new ResponseEntity<>(fillCatalogsService.saveProduct(newProduct), new HttpHeaders(), HttpStatus.CREATED);
     }
+
+    @PutMapping("/products/{id}")
+    public ResponseEntity<?> replaceProduct(@RequestBody ProductDTO newProduct, @PathVariable Integer id) {
+        fillCatalogsService.updateProduct(newProduct, id);
+        return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
+        fillCatalogsService.deleteProduct(id);
+        return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NO_CONTENT);
+    }
 }

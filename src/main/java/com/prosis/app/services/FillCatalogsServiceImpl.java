@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +63,32 @@ public class FillCatalogsServiceImpl implements FillCatalogsService {
     public ProductDTO saveProduct(ProductDTO productDTO) {
         ProductEntity productEntity = convertProductToEntity(productDTO);
         return convertProductToDto(productRepository.save(productEntity));
+    }
+
+    @Override
+    public Optional<ProductDTO> updateProduct(ProductDTO productDTO, int id) {
+        return productRepository.findById(id).map(product -> {
+            product.setImage(productDTO.getImage());
+            product.setName(productDTO.getName());
+            product.setDescription(productDTO.getDescription());
+            product.setInventoryMin(productDTO.getInventoryMin());
+            product.setPriceIn(productDTO.getPriceIn());
+            product.setPriceOut1(productDTO.getPriceOut1());
+            product.setPriceOut2(productDTO.getPriceOut2());
+            product.setPriceOut3(productDTO.getPriceOut3());
+            product.setInventoryOut3(productDTO.getInventoryOut3());
+            product.setUnit(productDTO.getUnit());
+            product.setPresentation(productDTO.getPresentation());
+            product.setStatus(productDTO.isStatus());
+            product.setBulk(productDTO.isBulk());
+
+            return convertProductToDto(productRepository.save(product));
+        });
+    }
+
+    @Override
+    public void deleteProduct(int id) {
+        productRepository.deleteById(id);
     }
 
     public ProductEntity convertProductToEntity(ProductDTO productDTO) {

@@ -3,6 +3,7 @@ package com.prosis.app.services;
 import com.prosis.app.DTOs.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FillCatalogsService {
     List<PersonDTO> findAllPersonClients();
@@ -16,4 +17,8 @@ public interface FillCatalogsService {
     List<ProductsResponse> findAllProductWithSumQuantity();
 
     ProductDTO saveProduct(ProductDTO productDTO);
+
+    Optional<ProductDTO> updateProduct(ProductDTO productDTO, int id);
+
+    void deleteProduct(int id);
 }
