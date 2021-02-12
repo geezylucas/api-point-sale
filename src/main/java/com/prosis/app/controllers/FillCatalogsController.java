@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/fillcatalogs")
@@ -30,6 +31,17 @@ public class FillCatalogsController {
         response.put("total", personDTOList.size());
         return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
     }
+
+    @GetMapping("/clients/{id}")
+    public ResponseEntity<?> oneClientById(@PathVariable int id) {
+        Optional<PersonDTO> personDTO = fillCatalogsService.findClientById(id);
+        if (personDTO.isPresent()) {
+            return new ResponseEntity<>(personDTO, new HttpHeaders(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PostMapping("/persons")
     public ResponseEntity<PersonDTO> savePerson(@RequestBody PersonDTO newPerson) {

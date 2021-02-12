@@ -21,4 +21,6 @@ public interface FillCatalogsService {
     Optional<ProductDTO> updateProduct(ProductDTO productDTO, int id);
 
     void deleteProduct(int id);
+
+    Optional<PersonDTO> findClientById(int id);
 }

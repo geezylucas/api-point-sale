@@ -91,6 +91,12 @@ public class FillCatalogsServiceImpl implements FillCatalogsService {
         productRepository.deleteById(id);
     }
 
+    @Override
+    public Optional<PersonDTO> findClientById(int id) {
+        Optional<PersonEntity> personEntity = personRepository.findById(id);
+        return personEntity.map(this::convertPersonToDto);
+    }
+
     public ProductEntity convertProductToEntity(ProductDTO productDTO) {
         ProductEntity productEntity = modelMapper.map(productDTO, ProductEntity.class);
         UserEntity userEntity = entityManager.getReference(UserEntity.class, productDTO.getUserId());
