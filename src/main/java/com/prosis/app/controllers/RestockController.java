@@ -1,8 +1,6 @@
 package com.prosis.app.controllers;
 
-import com.prosis.app.DTOs.ProductsResponse;
-import com.prosis.app.DTOs.RestockRequest;
-import com.prosis.app.DTOs.RestockResponse;
+import com.prosis.app.DTOs.*;
 import com.prosis.app.services.RestockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +21,11 @@ public class RestockController {
     @PostMapping
     public ResponseEntity<RestockResponse> newRestock(@RequestBody RestockRequest restockRequest) {
         return new ResponseEntity<>(restockService.restockByProductId(restockRequest), new HttpHeaders(), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/removestock")
+    public ResponseEntity<SellResponse> removeRestock(@RequestBody ProductsSellRequest productsSellRequest) {
+        return new ResponseEntity<>(restockService.removeStockByProductId(productsSellRequest), new HttpHeaders(), HttpStatus.CREATED);
     }
 
     @GetMapping("/productbybarcode/{barcode}")

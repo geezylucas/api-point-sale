@@ -1,9 +1,7 @@
 package com.prosis.app.services;
 
 import com.prosis.app.DAOs.*;
-import com.prosis.app.DTOs.ProductsResponse;
-import com.prosis.app.DTOs.RestockRequest;
-import com.prosis.app.DTOs.RestockResponse;
+import com.prosis.app.DTOs.*;
 import com.prosis.app.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -106,5 +105,32 @@ public class RestockServiceImpl implements RestockService {
     @Override
     public ProductsResponse findProductByBarcodeWithQuantity(String barcode) {
         return productRepository.findBarcodeWithQuantity(barcode).orElse(null);
+    }
+
+    @Override
+    public SellResponse removeStockByProductId(ProductsSellRequest productsSellRequest) {
+        List<ProductBatchEntity> batchEntityList = productBatchRepository.findAllProductBatchByProductIdOrderDateExpiry(productsSellRequest.getProductId());
+        for (ProductBatchEntity productBatch : batchEntityList) {
+            if (productsSellRequest.getQuantity() > 0) {
+                double currentQuantity = productBatch.getQuantity();
+                int removeQuantity = productsSellRequest.getQuantity();
+
+                if (currentQuantity >= removeQuantity) {
+                    productBatch.setQuantity(currentQuantity - removeQuantity);
+                    productsSellRequest.setQuantity(0);
+                } else {
+                    productBatch.setQuantity(0.0);
+                    productsSellRequest.setQuantity((int) (removeQuantity - currentQuantity));
+                }
+
+                if (productBatch.getQuantity() == 0) {
+                    productBatchRepository.delete(productBatch);
+                } else {
+                    productBatchRepository.save(productBatch);
+                }
+            }
+        }
+
+        return new SellResponse("Ok");
     }
 }
