@@ -22,6 +22,7 @@ public class BoxEntity {
     private BigDecimal total;
     private Timestamp createdStart;
     private Timestamp createdEnd;
+    private BigDecimal cash;
     private UserEntity userByUserId;
     private Collection<SellEntity> sellsById;
 
@@ -105,6 +106,16 @@ public class BoxEntity {
 
     public void setCreatedEnd(Timestamp createdEnd) {
         this.createdEnd = createdEnd;
+    }
+
+    @Basic
+    @Column(name = "cash", nullable = true, precision = 2)
+    public BigDecimal getCash() {
+        return cash;
+    }
+
+    public void setCash(BigDecimal cash) {
+        this.cash = cash;
     }
 
     @Override

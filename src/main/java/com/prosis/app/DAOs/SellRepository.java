@@ -2,6 +2,7 @@ package com.prosis.app.DAOs;
 
 import com.prosis.app.DTOs.MovementsResponse;
 import com.prosis.app.DTOs.ReturnsResponse;
+import com.prosis.app.DTOs.TotalOperations;
 import com.prosis.app.entities.SellEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -38,6 +39,12 @@ public interface SellRepository extends JpaRepository<SellEntity, Integer> {
             "where s.operation_type_id = 2 " +
             "  and DATE_FORMAT(s.created_at, '%Y-%m-%d') = ?1 " +
             "group by s.id, s.created_at " +
-            "order by s.created_at desc ")
+            "order by s.created_at desc;")
     List<ReturnsResponse> findAllReturnsToday(String date);
+
+    @Query(nativeQuery = true, value = "select sum(s.cash) as totalMoney, sum(o.quantity) as totalProducts " +
+            "from sell s " +
+            "inner join operation o on s.id = o.sell_id " +
+            "where s.operation_type_id = 2 and box_id = ?1 ")
+    TotalOperations findTotalsWhereBoxId(int boxId);
 }
