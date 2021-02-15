@@ -13,6 +13,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -74,7 +78,11 @@ public class SellServiceImpl implements SellService {
                         operationEntity.setSellBySellId(newSellEntity);
                         operationEntity.setStatus(true);
                         // TODO: get price by criterion
-                        operationEntity.setPriceOut(productEntity.get().getPriceOut1());
+                        if (dynamicDate() && productEntity.get().getPriceOut2() != null) {
+                            operationEntity.setPriceOut(productEntity.get().getPriceOut2());
+                        } else {
+                            operationEntity.setPriceOut(productEntity.get().getPriceOut1());
+                        }
                         operationEntity.setPriceIn(productBatch.getPriceIn());
                         operationEntity.setDateExpiry(productBatch.getDateExpiry());
 
@@ -118,5 +126,20 @@ public class SellServiceImpl implements SellService {
     @Override
     public List<DetailReturnResponse> getDetailsReturn(int sellId) {
         return operationRepository.findAllWithAmountWhereSellId(sellId);
+    }
+
+    public boolean dynamicDate() {
+        ZoneId zoneId = ZoneId.of("America/Mexico_City");
+        LocalDateTime todayWithTime = LocalDateTime.now(zoneId);
+        LocalDate today = LocalDate.now(zoneId);
+
+        String timeStart = "23:00";
+        String timeEnd = "07:00";
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTimeStart = LocalDateTime.parse(today + timeStart, formatter);
+        LocalDateTime dateTimeEnd = LocalDateTime.parse(today + timeEnd, formatter);
+
+        return (!todayWithTime.isBefore(dateTimeStart)) && (todayWithTime.isBefore(dateTimeEnd));
     }
 }
