@@ -133,8 +133,8 @@ public class SellServiceImpl implements SellService {
         LocalDateTime todayWithTime = LocalDateTime.now(zoneId);
         LocalDate today = LocalDate.now(zoneId);
 
-        String timeStart = "23:00";
-        String timeEnd = "07:00";
+        String timeStart = " 23:00";
+        String timeEnd = " 07:00";
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTimeStart = LocalDateTime.parse(today + timeStart, formatter);
